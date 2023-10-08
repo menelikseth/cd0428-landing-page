@@ -107,7 +107,6 @@ navUl.addEventListener('click', scrollToSection);
 /**
  * End Main Functions
  * Begin Events
- *
 */
 
 // Build menu 
