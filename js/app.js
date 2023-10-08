@@ -115,4 +115,22 @@ navUl.addEventListener('click', scrollToSection);
 
 // Set sections as active
 
+function makeActive() {
+    for (const section of sections) {
+        const bounds = section.parentElement.getBoundingClientRect();
+        const isInViewport =
+        bounds.top >= 0 &&
+        bounds.left > 0 &&
+        bounds.right <= window.innerWidth &&
+        bounds.bottom <= window.innerHeight;
+        if (isInViewport) {
+            //apply active state on current section and corresponding Nav link
+            section.parentElement.classList.add('your-active-class');
+        } else {
+            //Remove active state from other section and corresponding Nav link
+            section.parentElement.classList.remove('your-active-class');
+        }
+    }
+}
 
+window.addEventListener('scroll',makeActive);
