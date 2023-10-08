@@ -23,14 +23,48 @@
  * 
 */
 
+const sections = document.getElementsByClassName('landing__container'); //array of the sections
+let sectionCounter = sections.length; //total number of sections in HTML
+const mainSection = document.querySelector('main'); //main section in HTML
+const fragmentSections = document.createDocumentFragment();  //fragment to build the new sections
+const fragmentNav = document.createDocumentFragment(); //fragment to build menu
+const navUl = document.getElementById('navbar__list'); //navigation menu
+const sectionContent = [
+    {
+        sectionContentHeading: `Section`,
+        sectionContentBody: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fermentum metus faucibus lectus pharetra dapibus. Suspendisse potenti. Aenean aliquam elementum mi, ac euismod augue. Donec eget lacinia ex. Phasellus imperdiet porta orci eget mollis. Sed convallis sollicitudin mauris ac tincidunt. Donec bibendum, nulla eget bibendum consectetur, sem nisi aliquam leo, ut pulvinar quam nunc eu augue. Pellentesque maximus imperdiet elit a pharetra. Duis lectus mi, aliquam in mi quis, aliquam porttitor lacus. Morbi a tincidunt felis. Sed leo nunc, pharetra et elementum non, faucibus vitae elit. Integer nec libero venenatis libero ultricies molestie semper in tellus. Sed congue et odio sed euismod.</p>
+
+        <p>Aliquam a convallis justo. Vivamus venenatis, erat eget pulvinar gravida, ipsum lacus aliquet velit, vel luctus diam ipsum a diam. Cras eu tincidunt arcu, vitae rhoncus purus. Vestibulum fermentum consectetur porttitor. Suspendisse imperdiet porttitor tortor, eget elementum tortor mollis non.</p>`
+    },
+    {
+        sectionContentHeading: `Section`,
+        sectionContentBody: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fermentum metus faucibus lectus pharetra dapibus. Suspendisse potenti. Aenean aliquam elementum mi, ac euismod augue. Donec eget lacinia ex. Phasellus imperdiet porta orci eget mollis. Sed convallis sollicitudin mauris ac tincidunt. Donec bibendum, nulla eget bibendum consectetur, sem nisi aliquam leo, ut pulvinar quam nunc eu augue. Pellentesque maximus imperdiet elit a pharetra. Duis lectus mi, aliquam in mi quis, aliquam porttitor lacus. Morbi a tincidunt felis. Sed leo nunc, pharetra et elementum non, faucibus vitae elit. Integer nec libero venenatis libero ultricies molestie semper in tellus. Sed congue et odio sed euismod.</p>
+
+        <p>Aliquam a convallis justo. Vivamus venenatis, erat eget pulvinar gravida, ipsum lacus aliquet velit, vel luctus diam ipsum a diam. Cras eu tincidunt arcu, vitae rhoncus purus. Vestibulum fermentum consectetur porttitor. Suspendisse imperdiet porttitor tortor, eget elementum tortor mollis non.</p>`
+    },
+
+];
+
+// building new sections
+for (const content of sectionContent) {
+    sectionCounter++;
+    const newSection = document.createElement('section');
+    const newDiv = document.createElement('div');
+    newSection.id = 'section' + sectionCounter;
+    newSection.dataset.nav = 'Section ' + sectionCounter;
+    newDiv.classList.add('landing__container');
+    newSection.appendChild(newDiv);
+    newDiv.innerHTML = `<h2>${content.sectionContentHeading} ${sectionCounter}</h2>${content.sectionContentBody}`;
+    fragmentSections.appendChild(newSection);
+}
+
+mainSection.appendChild(fragmentSections);
 
 /**
  * End Global Variables
  * Start Helper Functions
  * 
 */
-
-
 
 /**
  * End Helper Functions
@@ -40,17 +74,40 @@
 
 // build the nav
 
+for (const section of sections) {
+    const newListItem = document.createElement('li');
+    const newAnchor = document.createElement('a');
+    const sectionId = section.parentElement.id;
+    const sectionNav = section.parentElement.dataset.nav;
+    newAnchor.classList.add('menu__link');
+    newAnchor.dataset.block = sectionId;
+    newAnchor.href = '#' + sectionId;
+    newAnchor.textContent = sectionNav;
+    newListItem.appendChild(newAnchor);
+    fragmentNav.appendChild(newListItem);
+}
+navUl.appendChild(fragmentNav);
+
 
 // Add class 'active' to section when near top of viewport
 
 
 // Scroll to anchor ID using scrollTO event
 
+function scrollToSection(event) {
+    const target = event.target;
+    if (target.classList.contains('menu__link')) {
+        event.preventDefault();
+        const element = target.dataset.block;
+        document.getElementById(element).scrollIntoView({ behavior: "smooth" });
+    }
+}
 
+navUl.addEventListener('click', scrollToSection);
 /**
  * End Main Functions
  * Begin Events
- * 
+ *
 */
 
 // Build menu 
