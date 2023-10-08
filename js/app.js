@@ -115,22 +115,33 @@ navUl.addEventListener('click', scrollToSection);
 
 // Set sections as active
 
+//Credit to the tip from Udacity's Project Development Strategy + a session lead's walktrhough for getting the makeActive() function started
+
 function makeActive() {
+    const navLinks = document.querySelectorAll('[data-block]');
     for (const section of sections) {
-        const bounds = section.parentElement.getBoundingClientRect();
-        const isInViewport =
-        bounds.top >= 0 &&
-        bounds.left > 0 &&
-        bounds.right <= window.innerWidth &&
-        bounds.bottom <= window.innerHeight;
+        const bounds = section.getBoundingClientRect();
+        const isInViewport = bounds.top <= (window.innerHeight * 0.5) && bounds.bottom > (window.innerHeight * 0.5);
         if (isInViewport) {
             //apply active state on current section and corresponding Nav link
             section.parentElement.classList.add('your-active-class');
+            for (const navLink of navLinks) {
+                if (navLink.dataset.block === section.parentElement.id) {
+                    navLink.classList.add('active');
+                }
+            }
+
         } else {
             //Remove active state from other section and corresponding Nav link
             section.parentElement.classList.remove('your-active-class');
+            const listElement = document.querySelectorAll('[data-block]');
+            for (const navLink of listElement) {
+                if (navLink.dataset.block === section.parentElement.id) {
+                    navLink.classList.remove('active');
+                }
+            }
         }
     }
 }
 
-window.addEventListener('scroll',makeActive);
+window.addEventListener('scroll', makeActive);
