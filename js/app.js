@@ -24,7 +24,9 @@
 */
 const sections = document.getElementsByClassName('landing__container'); //array of the sections
 const navUl = document.getElementById('navbar__list'); //navigation menu
-const sectionContent = [
+
+//array of section content
+// TODO: Move content to external text file or database
     {
         sectionContentHeading: `Section`,
         sectionContentBody: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fermentum metus faucibus lectus pharetra dapibus. Suspendisse potenti. Aenean aliquam elementum mi, ac euismod augue. Donec eget lacinia ex. Phasellus imperdiet porta orci eget mollis. Sed convallis sollicitudin mauris ac tincidunt. Donec bibendum, nulla eget bibendum consectetur, sem nisi aliquam leo, ut pulvinar quam nunc eu augue. Pellentesque maximus imperdiet elit a pharetra. Duis lectus mi, aliquam in mi quis, aliquam porttitor lacus. Morbi a tincidunt felis. Sed leo nunc, pharetra et elementum non, faucibus vitae elit. Integer nec libero venenatis libero ultricies molestie semper in tellus. Sed congue et odio sed euismod.</p>
@@ -52,7 +54,12 @@ const sectionContent = [
  * 
 */
 
-// building new sections
+// build new sections
+/**
+* @description Adds new sections into a fragment, then adds fragment to main
+* @param {array} newSections, an array that holds new content as object literals
+*/
+
 function newSections(newSections) {
     const mainSection = document.querySelector('main'); //main section in HTML
     let sectionCounter = sections.length; //total number of sections in HTML
@@ -76,6 +83,10 @@ function newSections(newSections) {
 }
 
 // build the nav based off of sections
+/**
+* @description builds the top nav menu dynamically off of the sections of the landing page
+* @param {array} sections, an array that holds the current sections of the page
+*/
 function navBarList(sections) {
     const fragmentNav = document.createDocumentFragment(); //fragment to build menu
     //loop over each section, create a list item, and an anchor for it
@@ -96,8 +107,10 @@ function navBarList(sections) {
     navUl.appendChild(fragmentNav);
 }
 
-// Add class 'active' to section when near top of viewport
 //Credit to the tip from Udacity's Project Development Strategy + a session lead's walktrhough for getting the makeActive() function started
+/**
+* @description Add class 'active' to section when near top of viewport
+*/
 function makeActive() {
     //collect navbar menu anchor elements into an array
     const navLinks = document.querySelectorAll('[data-block]');
@@ -127,7 +140,11 @@ function makeActive() {
     }
 }
 
-// Scroll to anchor ID using scrollTO event
+
+/**
+* @description Scroll to anchor ID using scrollTO event
+* @param {object} event, holds click target information for function to evaluate
+*/
 function scrollToSection(event) {
     const target = event.target;
     if (target.classList.contains('menu__link')) {
@@ -144,6 +161,3 @@ document.addEventListener('DOMContentLoaded', newSections(sectionContent)); //wa
 document.addEventListener('DOMContentLoaded', navBarList(sections)); //wait for dom to finish loading
 window.addEventListener('scroll', makeActive);
 navUl.addEventListener('click', scrollToSection);
-
-
-
