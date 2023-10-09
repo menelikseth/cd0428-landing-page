@@ -22,12 +22,7 @@
  * Define Global Variables
  * 
 */
-
 const sections = document.getElementsByClassName('landing__container'); //array of the sections
-let sectionCounter = sections.length; //total number of sections in HTML
-const mainSection = document.querySelector('main'); //main section in HTML
-const fragmentSections = document.createDocumentFragment();  //fragment to build the new sections
-const fragmentNav = document.createDocumentFragment(); //fragment to build menu
 const navUl = document.getElementById('navbar__list'); //navigation menu
 const sectionContent = [
     {
@@ -45,21 +40,6 @@ const sectionContent = [
 
 ];
 
-// building new sections
-for (const content of sectionContent) {
-    sectionCounter++;
-    const newSection = document.createElement('section');
-    const newDiv = document.createElement('div');
-    newSection.id = 'section' + sectionCounter;
-    newSection.dataset.nav = 'Section ' + sectionCounter;
-    newDiv.classList.add('landing__container');
-    newSection.appendChild(newDiv);
-    newDiv.innerHTML = `<h2>${content.sectionContentHeading} ${sectionCounter}</h2>${content.sectionContentBody}`;
-    fragmentSections.appendChild(newSection);
-}
-
-mainSection.appendChild(fragmentSections);
-
 /**
  * End Global Variables
  * Start Helper Functions
@@ -72,55 +52,59 @@ mainSection.appendChild(fragmentSections);
  * 
 */
 
-// build the nav
+// building new sections
+function newSections(newSections) {
+    const mainSection = document.querySelector('main'); //main section in HTML
+    let sectionCounter = sections.length; //total number of sections in HTML
+    const fragmentSections = document.createDocumentFragment();  //fragment to build the new sections
 
-for (const section of sections) {
-    const newListItem = document.createElement('li');
-    const newAnchor = document.createElement('a');
-    const sectionId = section.parentElement.id;
-    const sectionNav = section.parentElement.dataset.nav;
-    newAnchor.classList.add('menu__link');
-    newAnchor.dataset.block = sectionId;
-    newAnchor.href = '#' + sectionId;
-    newAnchor.textContent = sectionNav;
-    newListItem.appendChild(newAnchor);
-    fragmentNav.appendChild(newListItem);
+    //loop through each new section, build the elements, add id, class and content
+    newSections.forEach(content => {
+        sectionCounter++;
+        const newSection = document.createElement('section');
+        const newDiv = document.createElement('div');
+        newSection.id = 'section' + sectionCounter;
+        newSection.dataset.nav = 'Section ' + sectionCounter;
+        newDiv.classList.add('landing__container');
+        newSection.appendChild(newDiv);
+        newDiv.innerHTML = `<h2>${content.sectionContentHeading} ${sectionCounter}</h2>${content.sectionContentBody}`;
+        fragmentSections.appendChild(newSection); //append new section to fragment
+    });
+
+    //append fragment to main
+    mainSection.appendChild(fragmentSections);
 }
-navUl.appendChild(fragmentNav);
 
+// build the nav based off of sections
+function navBarList(sections) {
+    const fragmentNav = document.createDocumentFragment(); //fragment to build menu
+    //loop over each section, create a list item, and an anchor for it
+    for (const section of sections) {
+        const newListItem = document.createElement('li');
+        const newAnchor = document.createElement('a');
+        const sectionId = section.parentElement.id;
+        const sectionNav = section.parentElement.dataset.nav;
+        newAnchor.classList.add('menu__link');
+        newAnchor.dataset.block = sectionId;
+        newAnchor.href = '#' + sectionId;
+        newAnchor.textContent = sectionNav;
+        newListItem.appendChild(newAnchor);
+        fragmentNav.appendChild(newListItem); //append new list item to fragment
+    };
+
+    //append fragment to list
+    navUl.appendChild(fragmentNav);
+}
 
 // Add class 'active' to section when near top of viewport
-
-
-// Scroll to anchor ID using scrollTO event
-
-function scrollToSection(event) {
-    const target = event.target;
-    if (target.classList.contains('menu__link')) {
-        event.preventDefault();
-        const element = target.dataset.block;
-        document.getElementById(element).scrollIntoView({ behavior: "smooth" });
-    }
-}
-
-navUl.addEventListener('click', scrollToSection);
-/**
- * End Main Functions
- * Begin Events
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
 //Credit to the tip from Udacity's Project Development Strategy + a session lead's walktrhough for getting the makeActive() function started
-
 function makeActive() {
+    //collect navbar menu anchor elements into an array
     const navLinks = document.querySelectorAll('[data-block]');
+    //loop through sections and return size/position of each relative to viewport
     for (const section of sections) {
         const bounds = section.getBoundingClientRect();
+        //set isInViewport to true, or false, depending on whether section is half-way in/out of viewport
         const isInViewport = bounds.top <= (window.innerHeight * 0.5) && bounds.bottom > (window.innerHeight * 0.5);
         if (isInViewport) {
             //apply active state on current section and corresponding Nav link
@@ -130,7 +114,6 @@ function makeActive() {
                     navLink.classList.add('active');
                 }
             }
-
         } else {
             //Remove active state from other section and corresponding Nav link
             section.parentElement.classList.remove('your-active-class');
@@ -144,4 +127,23 @@ function makeActive() {
     }
 }
 
+// Scroll to anchor ID using scrollTO event
+function scrollToSection(event) {
+    const target = event.target;
+    if (target.classList.contains('menu__link')) {
+        event.preventDefault();
+        const element = target.dataset.block;
+        document.getElementById(element).scrollIntoView({ behavior: "smooth" });
+    }
+}
+/**
+ * End Main Functions
+ * Begin Events
+*/
+document.addEventListener('DOMContentLoaded', newSections(sectionContent)); //wait for dom to finish loading
+document.addEventListener('DOMContentLoaded', navBarList(sections)); //wait for dom to finish loading
 window.addEventListener('scroll', makeActive);
+navUl.addEventListener('click', scrollToSection);
+
+
+
