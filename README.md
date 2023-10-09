@@ -1,14 +1,16 @@
 # Landing Page Project
 
-## Instructions
+## Project Description
+This is the final project for Udacity FEND. The goal is to create a dynamic landing page using JavaScript, in order to demonstrate how to manipulate the DOM.
 
-The starter project has some HTML and CSS styling to display a static version of the Landing Page project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The following features were imlemented
+- Additional sections are added via JavaScript
+- A navigation menu is generated from the landing page sections
+- The page will dynamically highlight the active section in the viewport
+- Smooth scrolling animation from section to section
 
-To get started, open `js/app.js` and start building out the app's functionality
+## Dependences
+The basic HTML and CSS was supplied by the project, as well as the JavaScript used to generate the animated bubbles
 
-For specific, detailed instructions, look at the project instructions in the Udacity Classroom.
-README
-
-The ReadMe file should replace the given texts on the README template with specific information for this project. It doesn’t have to be thorough, but should have some basic information, eg. project description, usage, dependencies, and use correct the markdown syntax.
-
-References: markdown guide and example of README contents
+## Usage
+This project is for education purposes, to satisfy graduation requirements. It will be used later to further hone and develop JavaScript skills
